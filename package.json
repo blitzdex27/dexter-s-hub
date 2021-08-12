@@ -1,0 +1,19 @@
+{
+  "name": "dexters-hub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blitzdex27/dexter-s-hub.git"
+  },
+  "author": "dexter ramos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blitzdex27/dexter-s-hub/issues"
+  },
+  "homepage": "https://github.com/blitzdex27/dexter-s-hub#readme"
+}
