@@ -1,25 +1,39 @@
 const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
+
 const connectDB = require("./mongo");
+const { typeDefs, resolvers } = require("./graphql");
 
 const authRoute = require("./routes/auth");
-const graphqlRoute = require('./routes/graphql')
 
-const app = express();
+(async function startServer() {
+  try {
+    const server = new ApolloServer({ typeDefs, resolvers });
+    await server.start();
 
-// middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+    const app = express();
+    server.applyMiddleware({ app });
 
-connectDB()
-  .then(() => {
+    // middlewares
+    app.use(express.static("./client/build"));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
+    await connectDB();
     console.log("DB connected");
+
     const port = process.env.PORT || 5000;
     app.listen(port, () => {
       console.log(`Server is listening on port ${port}`);
     });
-  })
-  .catch((e) => console.log(e));
 
-// routes
-app.use(authRoute);
-app.use(graphqlRoute)
+    app.get("/", (req, res) => {
+      res.sendFile("/index.html");
+    });
+
+    // routes
+    app.use(authRoute);
+  } catch (e) {
+    console.log(e);
+  }
+})();
